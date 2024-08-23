@@ -10,6 +10,9 @@ namespace InputExample
         private SpriteBatch spriteBatch;
         private Ball[] balls;
 
+        InputManager inputManager;
+        
+
         /// <summary>
         /// Constructs the game
         /// </summary>
@@ -17,7 +20,7 @@ namespace InputExample
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         /// <summary>
@@ -31,6 +34,7 @@ namespace InputExample
                 new Ball(this, Color.Green) { Position = new Vector2(350, 200) },
                 new Ball(this, Color.Blue) { Position = new Vector2(450, 200) }
             };
+            inputManager = new InputManager();
             base.Initialize();
         }
 
@@ -51,10 +55,30 @@ namespace InputExample
         /// <param name="gameTime">The game time</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+
+            inputManager.Update(gameTime);
+
+            if (inputManager.Exit) Exit();
+
+            balls[1].Position += inputManager.Direction;
+
+            if (inputManager.Warp)
+            {
+                balls[1].Warp();
+            }
 
             // TODO: Add your update logic here
+            
+
+            
+
+            
+
+            
+
+            
+
+            
 
             base.Update(gameTime);
         }
